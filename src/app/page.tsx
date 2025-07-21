@@ -184,7 +184,9 @@ export default function HomePage() {
       )}
 
       <div className="relative z-10 w-full max-w-2xl h-full flex flex-col">
-        <h1 className="text-2xl font-bold mb-4 text-center text-white">Arnim-ZOLA</h1>
+        <h1 className="text-3xl font-bold text-center text-white mb-4">
+          Ask ZOLA - Your AI Assistant
+        </h1>
         <Card className="flex flex-col flex-1 overflow-hidden">
           <CardContent className="flex flex-col p-0 h-full">
             <ScrollArea className="flex-1 p-4 space-y-4 overflow-y-auto">
