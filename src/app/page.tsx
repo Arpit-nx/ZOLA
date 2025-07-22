@@ -191,23 +191,50 @@ export default function HomePage() {
           <CardContent className="flex flex-col p-0 h-full">
             <ScrollArea className="flex-1 p-4 space-y-4 overflow-y-auto">
               {messages.map((msg) => (
-                  <motion.div
-                    key={msg.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className={`rounded-2xl p-3 w-fit max-w-[75%] whitespace-pre-wrap break-words overflow-x-auto shadow-sm mb-3 ${
-                      msg.sender === "user"
-                        ? "bg-blue-500 text-white ml-auto text-right"
-                        : "bg-gray-200 text-black mr-auto text-left"
-                    }`}
-                  >
-                  {msg.sender === "bot" ? (
-                    <ReactMarkdown>{msg.content}</ReactMarkdown>
-                  ) : (
-                    <div>{msg.content}</div>
-                  )}
-                </motion.div>
+              <motion.div
+                key={msg.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className={`rounded-2xl p-3 w-fit max-w-[75%] shadow-sm mb-3 ${
+                  msg.sender === "user"
+                    ? "bg-blue-500 text-white ml-auto text-right"
+                    : "bg-gray-200 text-black mr-auto text-left"
+                }`}
+              >
+                {msg.sender === "bot" ? (
+                  <div className="overflow-x-auto whitespace-pre-wrap">
+                    <ReactMarkdown
+                      components={{
+                        code({ node, className, children, ...props }) {
+                          const isInline =
+                            node?.type !== "element" ||
+                            (node.tagName !== "pre" && node.tagName !== "code");
+
+                          return isInline ? (
+                            <code
+                              className="bg-black text-white px-1 py-0.5 rounded text-sm"
+                              {...props}
+                            >
+                              {children}
+                            </code>
+                          ) : (
+                            <pre className="bg-black text-white p-3 rounded-xl overflow-x-auto text-sm">
+                              <code className={className} {...props}>
+                                {children}
+                              </code>
+                            </pre>
+                          );
+                        },
+                      }}
+                    >
+                      {msg.content}
+                    </ReactMarkdown>
+                  </div>
+                ) : (
+                  <div>{msg.content}</div>
+                )}
+              </motion.div>
               ))}
               {isTyping && (
                 <motion.div className="bg-gray-200 text-black p-3 rounded-2xl w-fit max-w-[75%] mr-auto text-left shadow-sm">
